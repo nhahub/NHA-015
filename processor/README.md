@@ -14,15 +14,15 @@ processor/
 │   ├── processing_pipeline.py
 │   ├── Dockerfile
 │   ├── requirements.txt
-│   └── README.md (this file)
+│   
 │
 ├── 📁 english_processor/
 │   ├── english_processor.py
 │   ├── Dockerfile
 │   ├── requirements.txt
-│   └── README.md
+│   
 │
-└
+└──  README.md (this file)
 ```
 
 ---
