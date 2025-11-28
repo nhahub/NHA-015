@@ -1,0 +1,7 @@
+boto3
+python-dotenv
+python-dateutil
+scikit-learn
+numpy
+scipy
+google-generativeai
