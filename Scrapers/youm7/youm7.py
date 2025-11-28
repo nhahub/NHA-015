@@ -132,7 +132,7 @@ def clean_text(txt):
     for n in NOISE_PATTERNS:
         txt = txt.replace(n, "")
     
-    # Hard Stop for Cookie Text
+    # Hard Stop for Cookie Text( due to the server being in EU)
     cookie_start = "Welcome Your personal data will be processed"
     if cookie_start in txt:
         txt = txt.split(cookie_start)[0]
@@ -171,13 +171,13 @@ def scrape_full_article(driver, url):
         image_page = og["content"] if og else ""
 
         # 2. Date Extraction 
-        # Try Meta tag first 
+        
         date_str = ""
         meta_date = soup.find("meta", property="article:published_time")
         if meta_date:
             date_str = meta_date.get("content", "")
         
-        # If no meta, try visible span
+        
         if not date_str:
             vis_date = soup.select_one("span.writeDate, span.newsDate")
             if vis_date:

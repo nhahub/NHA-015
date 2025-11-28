@@ -51,7 +51,7 @@ while True:
 if not API_KEYS:
     raise RuntimeError("No GEMINI_API_KEYs found in environment variables!")
 
-logger.info(f"✅ Loaded {len(API_KEYS)}")
+logger.info(f"Loaded {len(API_KEYS)}")
 
 # Adjust limit based on key count 
 
@@ -177,7 +177,7 @@ def generate_with_rotation(prompt):
             response = model.generate_content(prompt)
             return response.text
         except Exception as e:
-            logger.warning(f"⚠️ Key {index+1} Failed: {e}")
+            logger.warning(f"Key {index+1} Failed: {e}")
             continue
     return None
 

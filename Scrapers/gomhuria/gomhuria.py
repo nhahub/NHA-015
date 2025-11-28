@@ -185,11 +185,11 @@ def init_driver():
     chromedriver_path = os.environ.get("CHROMEDRIVER_PATH")
 
     if chrome_bin and chromedriver_path:
-        #Running in Docker (Use the installed Chromium)
+        
         options.binary_location = chrome_bin
         service = Service(executable_path=chromedriver_path)
     else:
-        #fallback for Running Locally (Useing webdriver_manager to get Chrome driver)
+       
         from webdriver_manager.chrome import ChromeDriverManager
         service = Service(ChromeDriverManager().install())
 
@@ -204,18 +204,18 @@ def extract_image_from_soup(soup: BeautifulSoup) -> str:
     og = soup.find("meta", property="og:image")
     if og and og.get("content"):
         return normalize_url(og["content"])
-    # try main image selectors
+    
     img = soup.select_one("img.img-fluid, div.carousel-inner img, img")
     if img and img.get("src"):
         return normalize_url(img.get("src"))
     return ""
 
 def extract_published_date(soup: BeautifulSoup) -> str:
-    # try meta tags
+    
     meta_dt = soup.find("meta", {"property": "article:published_time"}) or soup.find("meta", {"name": "pubdate"})
     if meta_dt and meta_dt.get("content"):
         return meta_dt["content"]
-    # try visible publish date (contains 202 or month names)
+    
     possible = soup.find(lambda t: t.name in ["time", "span", "div"] and t.get_text() and ("202" in t.get_text() or "نشر" in t.get_text() or "20" in t.get_text()))
     if possible:
         return possible.get_text(strip=True)
@@ -225,11 +225,11 @@ def extract_title(soup: BeautifulSoup) -> str:
     h1 = soup.find(["h1"])
     if h1 and h1.get_text(strip=True):
         return h1.get_text(strip=True)
-    # fallback to title tag
+    
     title_tag = soup.find("title")
     if title_tag:
         return title_tag.get_text(strip=True)
-    # fallback to first h3 anchor on listing card
+    
     h3 = soup.find("h3")
     if h3 and h3.get_text(strip=True):
         return h3.get_text(strip=True)
@@ -254,7 +254,7 @@ def merge_detail_blocks(soup: BeautifulSoup) -> str:
     
     detail_divs = soup.select("div.DetialsNews")
     if not detail_divs:
-        # Fallback: try main article container by common classes
+        
         possible = soup.select_one("div.article-body, div#content, div.content, article")
         if possible:
             detail_divs = [possible]
@@ -285,7 +285,7 @@ def merge_detail_blocks(soup: BeautifulSoup) -> str:
 def extract_article_page(driver, url: str) -> Optional[dict]:
     try:
         driver.get(url)
-        time.sleep(random.uniform(0.9, 1.6))  # let JS settle a bit
+        time.sleep(random.uniform(0.9, 1.6)) 
         soup = BeautifulSoup(driver.page_source, "lxml")
 
         # Clean global noisy selectors in page before extraction
@@ -393,9 +393,8 @@ def scrape_section(driver, section_name: str, section_url_template: str, seen_li
                     continue
 
                 title = article_data.get("title") or ""
-                # prefer title from listing if missing
+                
                 if not title:
-                    # extract title from the link text on listing
                     title_elem = soup.find("a", href=lambda x: x and href in normalize_url(x))
                     if title_elem:
                         title = title_elem.get_text(strip=True)

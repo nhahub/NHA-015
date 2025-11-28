@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 # 1. Install System Dependencies & Chromium
-# We install 'chromium' and 'chromium-driver' directly from apt.
+
 
 RUN apt-get update && apt-get install -y \
     wget \

@@ -32,7 +32,7 @@ s3 = boto3.client("s3", region_name=AWS_REGION)
 
 
 # ---------------------------
-# Helper: format published date into human-friendly string
+# Date formatter
 # ---------------------------
 def format_published_date(iso_ts):
     """
@@ -50,7 +50,7 @@ def format_published_date(iso_ts):
 
 
 # ---------------------------
-# Helper: normalize Guardian article
+# Normalizer
 # ---------------------------
 def normalize_guardian_item(item):
  
@@ -63,13 +63,13 @@ def normalize_guardian_item(item):
         or fields.get("bodyText")[:180] + "..." if fields.get("bodyText") else None
     )
 
-    # Full text 
+   
     full_text = fields.get("bodyText") or fields.get("body") or None
 
-    # Thumbnail image
+    
     image_url = fields.get("thumbnail") or None
 
-    # Determine author
+    
     author = None
     for t in item.get("tags", []):
         if t.get("type") == "contributor":
@@ -78,10 +78,10 @@ def normalize_guardian_item(item):
     if not author:
         author = fields.get("byline")
 
-    # Section as category
+    
     category = item.get("sectionName") or item.get("section") or None
 
-    # Published timestamp
+    
     published_iso = item.get("webPublicationDate")
     published_date = format_published_date(published_iso)
 
@@ -155,7 +155,7 @@ def fetch_guardian_articles(sections=None, page_size=50, max_pages=5, order_by="
                 normalized = normalize_guardian_item(item)
                 normalized_articles.append(normalized)
 
-            # Pagination control
+            
             current_page = response_obj.get("currentPage", page)
             pages_total = response_obj.get("pages", page)
             if current_page >= pages_total:
@@ -184,7 +184,7 @@ def dedupe_by_url(articles):
 # Save to S3
 # ---------------------------
 def save_to_s3(data):
-    # timezone-aware UTC timestamp for filename
+    
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     key = f"{S3_PATH}theguardian_{timestamp}.json"
 
