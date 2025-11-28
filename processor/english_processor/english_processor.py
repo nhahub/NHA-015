@@ -38,9 +38,9 @@ MODEL_PATH = "/app/model.gguf"
 s3 = boto3.client("s3")
 
 # ===============================
-# LOADING Qwen
+# LOAD LOCAL BRAIN (QWEN)
 # ===============================
-logger.info("Loading AI Model (Qwen 2.5)...")
+logger.info("🧠 Loading Local AI Model (Qwen 2.5)...")
 try:
     llm = Llama(
         model_path=MODEL_PATH,
@@ -48,9 +48,9 @@ try:
         n_threads=2, 
         verbose=False
     )
-    logger.info("Model Loaded!")
+    logger.info("✅ Model Loaded!")
 except Exception as e:
-    logger.error(f"Failed to load model: {e}")
+    logger.error(f"❌ Failed to load model: {e}")
     raise e
 
 # ===============================
@@ -103,12 +103,12 @@ def load_raw_articles():
         try:
             data = json.loads(raw["Body"].read())
             
-            
+            # Handle dict (single item) vs list (multiple items)
             items = data if isinstance(data, list) else [data]
             
             for a in items:
                 if "full_text" in a or "summary" in a:
-                    
+                    # Normalize dates immediately
                     a["published_date"] = normalize_date(a.get("published_date"))
                     a["scraped_at"] = normalize_date(a.get("scraped_at"))
                     articles.append(a)
@@ -134,12 +134,12 @@ def save_to_s3(articles):
     logger.info(f"Saved {len(articles)} items to {key}")
 
 # ===============================
-# DEDUPLICATION 
+# DEDUPLICATION (TF-IDF)
 # ===============================
 def deduplicate_articles(articles, threshold=0.85):
     if len(articles) <= 1: return articles
     
-    
+    # Use title + summary for dedupe signature
     texts = [(a.get("title") or "") + " " + (a.get("summary") or "") for a in articles]
     
     try:
@@ -157,15 +157,16 @@ def deduplicate_articles(articles, threshold=0.85):
     except: return articles
 
 # ===============================
-# AI ENRICHMENT
+# AI ENRICHMENT (LOCAL QWEN)
 # ===============================
 def enrich_article(article):
-
+    # Prefer full text, fallback to summary
     text_source = article.get("full_text") or article.get("summary") or ""
     if not text_source: return "", "Neutral"
 
-   
-    # If text is huge we will take first 1000 chars + last 500 chars
+    # SMART TRUNCATION LOGIC
+    # If text is huge (e.g. Live Blog), take first 1000 chars + last 500 chars
+    # This captures the "Headlines" and the "Latest Updates"
     if len(text_source) > 1500:
         text_input = text_source[:1000] + "\n... [middle removed] ...\n" + text_source[-500:]
     else:
@@ -187,7 +188,8 @@ Text:
 <|im_start|>assistant
 """
     try:
-       
+        # Increased context window slightly to 2048 in initialization
+        # Max tokens 200 is enough for summary
         output = llm(prompt, max_tokens=200, stop=["<|im_end|>"], temperature=0.1)
         txt = output["choices"][0]["text"].strip()
         
@@ -202,7 +204,7 @@ Text:
         elif "SENTIMENT:" in txt:
              sentiment = txt.split("SENTIMENT:")[1].strip()
             
-       
+        # Fallback if AI returns original text as summary (rare hallucination)
         if not summary or len(summary) < 10:
              summary = text_source[:300] + "..."
             

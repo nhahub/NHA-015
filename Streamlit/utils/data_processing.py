@@ -114,15 +114,20 @@ def enrich_dataframe_for_analysis(df):
     
     viz_df = df.copy()
     
+    if 'embedding' in viz_df.columns:
+        viz_df = viz_df.drop(columns=['embedding'])
+    
     # Extract date parts
-    viz_df['date'] = viz_df['published_dt'].dt.date
-    viz_df['hour'] = viz_df['published_dt'].dt.hour
-    viz_df['weekday'] = viz_df['published_dt'].dt.day_name()
+    if 'published_dt' in viz_df.columns:
+        viz_df['date'] = viz_df['published_dt'].dt.date
+        viz_df['hour'] = viz_df['published_dt'].dt.hour
+        viz_df['weekday'] = viz_df['published_dt'].dt.day_name()
+        
+        # Add weekend flag
+        viz_df['is_weekend'] = viz_df['weekday'].isin(['Friday', 'Saturday'])
     
     # Normalize sentiment
-    viz_df['sentiment_lower'] = viz_df['sentiment'].str.lower()
-    
-    # Add weekend flag
-    viz_df['is_weekend'] = viz_df['weekday'].isin(['Friday', 'Saturday'])
+    if 'sentiment' in viz_df.columns:
+        viz_df['sentiment_lower'] = viz_df['sentiment'].str.lower()
     
     return viz_df

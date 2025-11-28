@@ -119,7 +119,12 @@ def create_volume_sentiment_timeline(viz_df):
 
 
 def create_sentiment_pie_chart(viz_df):
-    counts = viz_df['sentiment_lower'].value_counts()
+    
+    clean_df = viz_df.copy()
+    if 'embedding' in clean_df.columns:
+        clean_df = clean_df.drop(columns=['embedding'])
+        
+    counts = clean_df['sentiment_lower'].value_counts()
     is_dark = theme_manager.is_dark_mode()
     
     colors = []
@@ -136,7 +141,8 @@ def create_sentiment_pie_chart(viz_df):
         values=counts.values,
         marker=dict(colors=colors),
         hole=0.6,
-        textfont=dict(color='#FFFFFF'), # Always white inside colored slices
+        textfont=dict(color='#FFFFFF'), 
+        
         hovertemplate='<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<extra></extra>'
     )])
     

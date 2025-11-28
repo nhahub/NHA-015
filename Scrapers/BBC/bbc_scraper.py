@@ -136,7 +136,7 @@ def scrape_bbc_amp(seen_links):
             logger.error(f"Failed to fetch RSS {feed_url}: {e}")
             continue
 
-        for item in items[:10]:
+        for item in items[:10]: # Limit to 10 per section to be polite
             title = item.title.text.strip() if item.title else ""
             link = item.link.text.strip() if item.link else ""
             
@@ -174,7 +174,7 @@ def scrape_bbc_amp(seen_links):
             }
 
             all_articles.append(article)
-            time.sleep(0.5)
+            time.sleep(0.5) # Polite delay
 
     return all_articles
 

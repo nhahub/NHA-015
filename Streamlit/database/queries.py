@@ -13,19 +13,14 @@ logger = logging.getLogger("mokhber.queries")
 
 
 def build_headlines_sql(table, cols):
-    """
-    Build SQL query for fetching headlines.
-    Handles case-insensitive column matching.
-    """
-    
     col_lookup = {c.lower(): c for c in cols}
-    
-    
     col_map = {}
+    
+    
     target_fields = [
         "id", "title", "summary", "source", "category", 
         "sentiment", "url", "language", "published_date", 
-        "scraped_at", "image_url"
+        "scraped_at", "image_url", "embedding"
     ]
     
     for field in target_fields:
@@ -33,8 +28,6 @@ def build_headlines_sql(table, cols):
             col_map[field] = col_lookup[field]
         else:
             col_map[field] = f"NULL AS {field}"
-    
-    # Determine ordering column
     
     order_col = col_lookup.get("scraped_at", "id")
     
@@ -49,7 +42,8 @@ def build_headlines_sql(table, cols):
            {col_map['language']} AS language,
            {col_map['published_date']} AS published_date,
            {col_map['scraped_at']} AS scraped_at,
-           {col_map['image_url']} AS image_url
+           {col_map['image_url']} AS image_url,
+           {col_map['embedding']} AS embedding
     FROM {table}
     WHERE 1=1
     """
@@ -59,13 +53,13 @@ def build_headlines_sql(table, cols):
 @st.cache_data(ttl=Config.DATA_CACHE_TTL)
 def fetch_headlines(table, cols, start_days=30, limit=2000, search=None):
     """Fetch and normalize headlines from database"""
+    
+    # 1. Build Query 
     base_sql, order_col = build_headlines_sql(table, cols)
     params = {}
     col_lookup = {c.lower(): c for c in cols}
     
-    # --- SQL FILTERING---
-   
-    
+    # 2. Search Filtering
     search_clause = ""
     if search:
         has_title = "title" in col_lookup
@@ -80,28 +74,25 @@ def fetch_headlines(table, cols, start_days=30, limit=2000, search=None):
             elif has_summary:
                 search_clause = " AND summary ILIKE :search"
     
-    
+    # 3. Fetch Data 
     safe_limit = int(limit) + 500
     final_sql = base_sql + search_clause + f" ORDER BY {order_col} DESC LIMIT :limit"
     params["limit"] = safe_limit
-    
     
     df = safe_read_sql(final_sql, params=params)
     
     if df.empty:
         return df
     
-    
+    # 4. Normalize Data Types & Dates
     df = normalize_dataframe(df)
     
-   
+    # 5. Date Filtering 
     if not df.empty and 'published_dt' in df.columns:
         cutoff_date = datetime.now(tz=Config.CAIRO_TZ) - timedelta(days=int(start_days))
-        
-        
         df = df[df['published_dt'] >= cutoff_date]
         
-       
+        
         df = df.head(int(limit))
     
     return df
@@ -110,6 +101,7 @@ def fetch_headlines(table, cols, start_days=30, limit=2000, search=None):
 def normalize_dataframe(df):
     """Normalize and clean DataFrame columns"""
     
+    # Fill NaNs to prevent UI errors
     df['title'] = df['title'].astype(str).fillna("").replace("nan", "")
     df['summary'] = df['summary'].astype(str).fillna("").replace("nan", "")
     df['source'] = df['source'].astype(str).fillna("Unknown")
@@ -117,7 +109,6 @@ def normalize_dataframe(df):
     df['sentiment'] = df['sentiment'].astype(str).fillna("neutral")
     df['image_url'] = df['image_url'].astype(str).fillna("").replace("nan", "")
     
-    # Parse dates
     
     def parse_row_pub(r):
         pub = r.get('published_date')
@@ -130,7 +121,7 @@ def normalize_dataframe(df):
     
     df['published_dt'] = df.apply(parse_row_pub, axis=1)
     
-    # Create display string
+    
     df['published_display'] = df.apply(
         lambda r: unified_date_display(
             r.get('published_date') or "", 
