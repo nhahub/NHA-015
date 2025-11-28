@@ -239,12 +239,6 @@ Explore real-time news analytics, sentiment trends, and interactive visualizatio
    http://localhost:8501
    ```
 
-### Cloud Deployment & More Details
-Detailed deployment instructions are in each component's README:
-- [Scrapers Deployment](Scrapers/readme.md)
-- [Processors Deployment](processor/readme.md)
-- [Dashboard Deployment](Streamlit/readme.md)
-
 ---
 
 ## 📁 Project Structure
