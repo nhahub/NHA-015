@@ -125,7 +125,7 @@ AWS Step Functions orchestrates the entire pipeline:
 
 🔗 **[Try the Live Dashboard](https://mokhber.streamlit.app/)**
 
-Explore real-time news analytics, sentiment trends, and interactive visualizations without any setup. The dashboard is updated regularly with the latest articles from our 6+ news sources.
+Explore real-time news analytics, sentiment trends, and interactive visualizations without any setup. The dashboard is updated regularly with the latest articles from our 6 news sources.
 
 ---
 
