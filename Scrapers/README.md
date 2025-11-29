@@ -281,7 +281,7 @@ s3://your-bucket/
 | Youm7 | 10-15 min | 60-120 | N/A |
 | Gomhuria | 6-10 min | 30-60 | N/A |
 | Guardian | 2-3 min | 200-300 | ~20 |
-| BBC | 3-5 min | 50-80 | ~5 |
+| BBC | 3-5 min | 50-80 | N/A |
 | NYT | 1-2 min | 100-200 | ~10 |
 
 ---
