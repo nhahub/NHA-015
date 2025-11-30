@@ -222,7 +222,7 @@ Explore real-time news analytics, sentiment trends, and interactive visualizatio
    GUARDIAN_API_KEY=your-guardian-key
    ```
 
-3. **Run with Docker Compose**
+3. **Run with Docker Compose** 
    ```bash
    # Build images
    docker-compose build
@@ -283,7 +283,7 @@ Project_News_Sentiment_Analysis/
 │
 ├            
 ├                   
-└── README.md  # This file
+└── README.md 
 ```
 
 ### Component Details
