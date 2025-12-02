@@ -43,11 +43,6 @@ logger.info("Model Loaded.")
 # DATABASE HELPERS 
 # -------------------------------------------------
 def get_pg_conn(register_vec=True):
-    """
-    Creates a database connection.
-    register_vec: If True, attempts to register pgvector. 
-                  Set to False for initial setup (Chicken & Egg problem).
-    """
     conn = psycopg2.connect(
         host=PG_HOST,
         port=PG_PORT,
