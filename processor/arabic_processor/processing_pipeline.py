@@ -84,7 +84,7 @@ def normalize_date(dt_str):
     if "|" in s: s = s.replace("|", " ").replace("-", "/")
     try:
         cleaned = re.sub(r"[^\dT:\-+Z/ :APM]", "", s)
-        dt = parser.parse(cleaned)
+        dt = parser.parse(cleaned, dayfirst=True)
         return dt.strftime("%A, %d %B %Y – %H:%M")
     except: return None
 
