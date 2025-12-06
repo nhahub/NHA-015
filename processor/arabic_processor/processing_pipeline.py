@@ -84,7 +84,15 @@ def normalize_date(dt_str):
     if "|" in s: s = s.replace("|", " ").replace("-", "/")
     try:
         cleaned = re.sub(r"[^\dT:\-+Z/ :APM]", "", s)
-        dt = parser.parse(cleaned, dayfirst=True)
+        
+        # Detect format: ISO (YYYY-MM-DD) vs DD-MM-YYYY
+        is_iso = bool(re.match(r'^\d{4}[-T]', cleaned))
+        
+        if is_iso:
+            dt = parser.parse(cleaned, dayfirst=False)  # ISO format
+        else:
+            dt = parser.parse(cleaned, dayfirst=True)   # DD-MM-YYYY format
+        
         return dt.strftime("%A, %d %B %Y – %H:%M")
     except: return None
 
