@@ -23,6 +23,7 @@
 - [Architecture](#%EF%B8%8F-architecture)
 - [Features](#-features)
 - [Live Demo](#-live-demo)
+- [Team Memebers](#team-members)
 - [System Components](#-system-components)
 - [Technology Stack](#%EF%B8%8F-technology-stack)
 - [Getting Started](#for-local-development)
