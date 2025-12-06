@@ -23,6 +23,7 @@
 - [Architecture](#%EF%B8%8F-architecture)
 - [Features](#-features)
 - [Live Demo](#-live-demo)
+- [Team Memebers](#team-members)
 - [System Components](#-system-components)
 - [Technology Stack](#%EF%B8%8F-technology-stack)
 - [Getting Started](#for-local-development)
@@ -127,6 +128,16 @@ AWS Step Functions orchestrates the entire pipeline:
 
 Explore real-time news analytics, sentiment trends, and interactive visualizations without any setup. The dashboard is updated regularly with the latest articles from our 6+ news sources.
 
+---
+---
+## Team Members
+| Name | Contribution | 
+|--------------|---------------------------------------------------------|
+| **Abdalla Elmougi** | Team Leader, AWS Cloud Configuration , Streamlit Dashboard Analysis&Deployment, Scrapers , Loader to Database , Api Key rotation, Automation | 
+| **Irinie Magued** | Gemini API , Arabic Processor, Processed data deduplication(TF-IDF)  | 
+| **Athanasios Hany** |Qwen GGUF LLM, English Processor, Processed data deduplication(TF-IDF) | 
+| **Mohamed Ahmed** | Streamlit Dashboard Configurations , Queries, charts |
+| **Karim Khaled** | Scrapers , raw data deduplication | 
 ---
 
 ## 🧩 System Components
