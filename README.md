@@ -112,7 +112,7 @@ AWS Step Functions orchestrates the entire pipeline:
 
 ### 🎨 Theming
 - **Midnight Mode** (Dark) - Default high-contrast theme
-- **Daylight Mode** (Light) - Professional light theme with hybrid dark sidebar
+- **Daylight Mode** (Light) -light theme with dark sidebar
 - Dynamic theme switching without page reload
 
 ---
@@ -126,7 +126,7 @@ AWS Step Functions orchestrates the entire pipeline:
 
 🔗 **[Try the Live Dashboard](https://mokhber.streamlit.app/)**
 
-Explore real-time news analytics, sentiment trends, and interactive visualizations without any setup. The dashboard is updated regularly with the latest articles from our 6+ news sources.
+Explore real-time news analytics, sentiment trends, and interactive visualizations without any setup. The dashboard is updated regularly with the latest articles from our 6 news sources.
 
 ---
 ---
