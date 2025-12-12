@@ -42,7 +42,7 @@
 
 - 🔄 **Automated Multi-Source Scraping** - Collects news from 6 major outlets
 - 🧠 **AI-Powered Processing** - Gemini & Qwen models for summarization & sentiment
-- 🔍 **Semantic Search** - Vector embeddings with pgvector for duplicate detection
+- 🔍 **Semantic Deduplication** - Vector embeddings with pgvector for duplicate detection
 - 📊 **Interactive Dashboard** - Real-time analytics with Streamlit
 - 🌍 **Bilingual Support** - Full Arabic and English processing pipelines
 - ☁️ **Cloud-Native** - Deployed on AWS with S3, RDS, and ECS
