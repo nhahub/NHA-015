@@ -124,6 +124,11 @@ AWS Step Functions orchestrates the entire pipeline:
 
 **Experience Mokhber Intelligence in action!**
 
+
+
+🔗 **[Check out the Demo Video](https://drive.google.com/file/d/19jBCxl4zOQw_roTdEuMKSynCD0p2b1td/view?usp=sharing)**
+
+
 🔗 **[Try the Live Dashboard](https://mokhber.streamlit.app/)**
 
 Explore real-time news analytics, sentiment trends, and interactive visualizations without any setup. 
